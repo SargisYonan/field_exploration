@@ -15,6 +15,15 @@ classdef UAV < handle
         velocity = 1;
         
         flying = false;
+        
+        samples = [];
+        s_loc = [];
+        
+        waypoint_reached = false;
+        
+        field_obj;
+        
+        cursor = '^'
     end
         
     properties (SetAccess = private)
@@ -130,11 +139,14 @@ classdef UAV < handle
                 
                 uav_obj.curr_pos = uav_obj.path(uav_obj.path_i, 1:2);
                 uav_obj.heading = radtodeg(uav_obj.path(uav_obj.path_i, 3));
-                
+
+                uav_obj.sample(uav_obj.curr_pos(1), uav_obj.curr_pos(2));
             end
+            
+            uav_obj.waypoint_reached = false;
         end
         
-        function update(uav_obj)
+        function uav_obj = update(uav_obj)
             if uav_obj.flying 
                 if uav_obj.path_i > 0
                     uav_obj.path_i = uav_obj.path_i + 1;
@@ -142,15 +154,57 @@ classdef UAV < handle
                     if uav_obj.path_i <= size(uav_obj.path, 1)
                         uav_obj.curr_pos = uav_obj.path(uav_obj.path_i, 1:2);
                         uav_obj.heading = radtodeg(uav_obj.path(uav_obj.path_i, 3));
+                        
+                        uav_obj.sample(uav_obj.curr_pos(1), uav_obj.curr_pos(2));
                     else
+                        uav_obj.waypoint_reached = true;
                         uav_obj.path_i = 0;
                         uav_obj.path = [];
                     end
                 else
                     uav_obj.set_destination([uav_obj.curr_pos + [cosd(uav_obj.heading) sind(uav_obj.heading)]]);
                 end
-
+                
+                if ((uav_obj.heading >= 315 && uav_obj.heading <= 360) || (uav_obj.heading >= 0 && uav_obj.heading < 45))
+                    uav_obj.cursor = '->';
+                elseif (uav_obj.heading == 45 || uav_obj.heading == 135)
+                    uav_obj.cursor = '-v';
+                elseif (uav_obj.heading > 45 && uav_obj.heading < 135)
+                    uav_obj.cursor = '-^';
+                elseif (uav_obj.heading > 135 && uav_obj.heading < 225)
+                    uav_obj.cursor = '-<';
+                elseif(uav_obj.heading > 225 && uav_obj.heading < 315)
+                    uav_obj.cursor = '-v';
+                elseif (uav_obj.heading == 225 || uav_obj.heading == 315)
+                    uav_obj.cursor = '-^';
+                end
+                
             end
+        end
+        
+        function uav_obj = sample(uav_obj, x, y)
+            [fx,fy,fz,err] = uav_obj.field_obj.sample(x,y);
+            if (~err)
+                if ( ~isempty(uav_obj.s_loc) )
+
+                    if (uav_obj.s_loc(end,:) == [fx, fy])
+                       if (uav_obj.samples(end) ~= fz)
+                           % change this to be statically allocated
+                           uav_obj.samples(end+1) = fz;
+                       end
+                    else 
+                        uav_obj.samples(end+1) = fz;
+                        uav_obj.s_loc(end+1,:) = [fx fy];
+                    end
+                else
+                    uav_obj.samples(1) = fz;
+                    uav_obj.s_loc(1,:) = [fx fy];
+                end
+            end
+        end
+        
+        function uav_obj = set_field(uav_obj, field_obj)
+           uav_obj.field_obj = field_obj; 
         end
         
     end
