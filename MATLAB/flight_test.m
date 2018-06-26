@@ -98,6 +98,7 @@ max_var = inf;
 last_max_var = inf;
 epsilon_var = 0.01;
 
+path = [];
 fprintf('Simulation starting...\n')
 while (true)
     
@@ -105,7 +106,7 @@ while (true)
     
     area_covered = length(u1.s_loc)/(width^2);
     
-    if (u1.waypoint_reached)
+    if (u1.waypoint_reached && isempty(path))
         
         fprintf('waypoint at [%.2f, %.2f] reached:\n', u1.curr_pos(1), u1.curr_pos(2))
         
@@ -139,23 +140,66 @@ while (true)
             fprintf('\nROI of exploration minimized\n') 
             fprintf('\n\nExploration mission complete\n\n') 
             break;
+        else
+            fprintf('Var epsilon: %f > e=%f\n', abs(last_max_var - max_var), epsilon_var)
         end
         
         last_max_var = max_var;
         
-        
         % find a handful of the largest variances
-        nv = 2; % number of of variances to pick off
-        [varssorted, original_pos] = sort( var_field, 'descend' );
-        [nrow, ncol] = find(var_field == max_var);
+        nv = 10; % number of of variances to pick off
+        var_to_sort = var_field(var_field > 0);
+        [var_to_sort, ~, ~] = unique(var_to_sort, 'first');
+        [vars_sorted, original_pos] = sort( var_to_sort, 'descend' );
+        vars_sorted = vars_sorted(1:nv);
+        
+        target_vertex_locs = zeros(nv, 2 + 1);
+        neighbors = zeros(nv, 2 + 1);
+        
+        for vi = 1:nv
+            [lx, ly] = find(var_field == (vars_sorted(vi)));
+            target_vertex_locs(vi, :) = [lx(1) ly(1) vars_sorted(vi)];
+        end
 
-        % calculate distance to the next within reach large var
-        cx = u1.curr_pos(1);
-        cy = u1.curr_pos(2);
-        [dv, nextidx] = min(abs( (cx^2 + cy^2) - (nrow.^2 + ncol.^2) ));
-        nextpos = [nrow(nextidx) ncol(nextidx)];
-        % go to the next most uncertain place within reach
-        u1.set_destination(floor(nextpos));
+        for vi = 1:nv
+            neigh = knnsearch(target_vertex_locs, target_vertex_locs(vi, :), 'k', 1);
+            neighbors(neigh, :) = [target_vertex_locs(vi, :)];
+        end
+        
+        dest_node = knnsearch(target_vertex_locs(:,1:2), target_vertex_locs(1, 1:2), 'k', 1);
+        start_node = knnsearch(target_vertex_locs(:,1:2), floor(u1.curr_pos), 'k', 1);
+        
+        Am = zeros(nv, nv);
+        for ai = 1:nv
+            for aj = 1:nv
+                if (norm(neighbors(ai,1:2) - neighbors(aj,1:2)) > width/10)
+                    Am(ai, aj) = 0;
+                else
+                    Am(ai, aj) = 1 / (neighbors(ai,3) + neighbors(aj,3));
+                end
+            end
+        end
+        
+        G = graph(Am);
+        [path, D] = shortestpath(G, start_node, dest_node);
+        if (D == inf)
+            [nrow, ncol] = find(var_field == max_var);
+            % calculate distance to the next within reach large var
+            cx = u1.curr_pos(1);
+            cy = u1.curr_pos(2);
+            [dv, nextidx] = min(abs( (cx^2 + cy^2) - (nrow.^2 + ncol.^2) ));
+            nextpos = [nrow(nextidx) ncol(nextidx)];
+            % go to the next most uncertain place within reach
+            u1.set_destination(floor(nextpos));
+        else
+            u1.set_destination(floor( neighbors(path(1),1:2) ));     
+            if (length(path) > 1)
+                path = path(2:end);
+            else
+                path = [];
+            end
+        end
+
         
         fprintf('setting waypoint at [%.2f, %.2f]\n', u1.dest_pos(1), u1.dest_pos(2))
         
@@ -195,6 +239,8 @@ while (true)
             plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['g',u1.cursor]), 'LineWidth', 2)
             hold on
             plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
+            hold on
+            plot(neighbors(path(:),1), neighbors(path(:),2), 'rx', 'LineWidth', 2)
             hold off
             set(h4,'Ydir','reverse');
             title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
@@ -208,7 +254,25 @@ while (true)
             end
             
         end
+       
+    elseif (u1.waypoint_reached && ~isempty(path))
+        u1.set_destination(floor( neighbors(path(1),1:2) ));
+        path = path(2:end);
         
+        h4 = subplot(2,2,4);       
+        plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5)
+        hold on
+        plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['g',u1.cursor]), 'LineWidth', 2)
+        hold on
+        plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
+        hold on
+        plot(neighbors(path(:),1), neighbors(path(:),2), 'rx', 'LineWidth', 2)
+        hold off
+        set(h4,'Ydir','reverse');
+        title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
+        % set the boundry of the frame
+        axis([-1 width+1 -1 width+1]);
+        pause(.01)
     end
 end
 
