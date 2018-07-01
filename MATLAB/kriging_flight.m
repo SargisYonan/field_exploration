@@ -26,7 +26,7 @@ if (record_flight)
     % format the file name for the video to have the date and time in it
     [token, remain] = strtok(datestr(datetime), ' ');
     [token2, remain2] = strtok(remain, ' ');
-    live_plot_video_filename = strcat(['video/', token, '-', token2, '-explore_sim']);
+    live_plot_video_filename = strcat(['video/', token, '-', token2, '-kriging_explore_sim']);
     
     fprintf('Recording flight --> %s\n', live_plot_video_filename)
 end
@@ -41,13 +41,13 @@ addpath(genpath(pwd))
 %% Vehicle/Field Dynamics Parameters
 
 % square size of the field
-width = 300;
+width = 30;
 
 % initial positon of the UAV
 x0 = 1;
 y0 = 1;
 % the turning radius of the UAV
-r = 4;
+r = 1;
 
 %% Kriging Parameters
 a = 100; % initial seed for fmincon's range search
@@ -69,7 +69,7 @@ var_field = inf .* ones(size(field.z));
 u1 = UAV([x0 y0]);
 u1.set_radius(r);
 u1.set_field(field);
-u1.set_destination(floor([10 10])); 
+u1.set_destination(floor([5 5])); 
 
 fprintf('UAV created:\n')
 fprintf('\tDubins Vehicle radius: %.2f\n', u1.radius)
@@ -98,7 +98,7 @@ max_var = inf;
 last_max_var = inf;
 epsilon_var = 0.01;
 
-path = [];
+pathfound = [];
 fprintf('Simulation starting...\n')
 while (true)
     
@@ -106,7 +106,7 @@ while (true)
     
     area_covered = length(u1.s_loc)/(width^2);
     
-    if (u1.waypoint_reached && isempty(path))
+    if (u1.waypoint_reached && isempty(pathfound))
         
         fprintf('waypoint at [%.2f, %.2f] reached:\n', u1.curr_pos(1), u1.curr_pos(2))
         
@@ -135,8 +135,8 @@ while (true)
         fprintf('Calculating next trajectory\n')
         max_var = max(max(var_field));
         if ( abs(last_max_var - max_var) <= epsilon_var ...
-          && isempty(find(var_field == inf)) ...
-          && area_covered > 0.01 )
+          && area_covered > 0.05 )
+            fprintf('Var epsilon: %f > e=%f\n', abs(last_max_var - max_var), epsilon_var)
             fprintf('\nROI of exploration minimized\n') 
             fprintf('\n\nExploration mission complete\n\n') 
             break;
@@ -146,60 +146,15 @@ while (true)
         
         last_max_var = max_var;
         
-        % find a handful of the largest variances
-        nv = 10; % number of of variances to pick off
-        var_to_sort = var_field(var_field > 0);
-        [var_to_sort, ~, ~] = unique(var_to_sort, 'first');
-        [vars_sorted, original_pos] = sort( var_to_sort, 'descend' );
-        vars_sorted = vars_sorted(1:nv);
-        
-        target_vertex_locs = zeros(nv, 2 + 1);
-        neighbors = zeros(nv, 2 + 1);
-        
-        for vi = 1:nv
-            [lx, ly] = find(var_field == (vars_sorted(vi)));
-            target_vertex_locs(vi, :) = [lx(1) ly(1) vars_sorted(vi)];
-        end
+        varnum = 30; % number of of variances to pick off
+        [pathfound, neighbors] = krigpathfind(varnum, var_field, u1.curr_pos);
 
-        for vi = 1:nv
-            neigh = knnsearch(target_vertex_locs, target_vertex_locs(vi, :), 'k', 1);
-            neighbors(neigh, :) = [target_vertex_locs(vi, :)];
-        end
-        
-        dest_node = knnsearch(target_vertex_locs(:,1:2), target_vertex_locs(1, 1:2), 'k', 1);
-        start_node = knnsearch(target_vertex_locs(:,1:2), floor(u1.curr_pos), 'k', 1);
-        
-        Am = zeros(nv, nv);
-        for ai = 1:nv
-            for aj = 1:nv
-                if (norm(neighbors(ai,1:2) - neighbors(aj,1:2)) > width/10)
-                    Am(ai, aj) = 0;
-                else
-                    Am(ai, aj) = 1 / (neighbors(ai,3) + neighbors(aj,3));
-                end
-            end
-        end
-        
-        G = graph(Am);
-        [path, D] = shortestpath(G, start_node, dest_node);
-        if (D == inf)
-            [nrow, ncol] = find(var_field == max_var);
-            % calculate distance to the next within reach large var
-            cx = u1.curr_pos(1);
-            cy = u1.curr_pos(2);
-            [dv, nextidx] = min(abs( (cx^2 + cy^2) - (nrow.^2 + ncol.^2) ));
-            nextpos = [nrow(nextidx) ncol(nextidx)];
-            % go to the next most uncertain place within reach
-            u1.set_destination(floor(nextpos));
+        u1.set_destination(floor( neighbors(pathfound(1),1:2) ));     
+        if (length(pathfound) > 1)
+            pathfound = pathfound(2:end);
         else
-            u1.set_destination(floor( neighbors(path(1),1:2) ));     
-            if (length(path) > 1)
-                path = path(2:end);
-            else
-                path = [];
-            end
+            pathfound = [];
         end
-
         
         fprintf('setting waypoint at [%.2f, %.2f]\n', u1.dest_pos(1), u1.dest_pos(2))
         
@@ -240,7 +195,7 @@ while (true)
             hold on
             plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
             hold on
-            plot(neighbors(path(:),1), neighbors(path(:),2), 'rx', 'LineWidth', 2)
+            plot(neighbors(pathfound(:),1), neighbors(pathfound(:),2), 'rx', 'LineWidth', 2)
             hold off
             set(h4,'Ydir','reverse');
             title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
@@ -255,9 +210,9 @@ while (true)
             
         end
        
-    elseif (u1.waypoint_reached && ~isempty(path))
-        u1.set_destination(floor( neighbors(path(1),1:2) ));
-        path = path(2:end);
+    elseif (u1.waypoint_reached && ~isempty(pathfound))
+        u1.set_destination(floor( neighbors(pathfound(1),1:2) ));
+        pathfound = pathfound(2:end);
         
         h4 = subplot(2,2,4);       
         plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5)
@@ -266,7 +221,7 @@ while (true)
         hold on
         plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
         hold on
-        plot(neighbors(path(:),1), neighbors(path(:),2), 'rx', 'LineWidth', 2)
+        plot(neighbors(pathfound(:),1), neighbors(pathfound(:),2), 'rx', 'LineWidth', 2)        
         hold off
         set(h4,'Ydir','reverse');
         title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
@@ -330,3 +285,9 @@ end
 current_rms_error = norm(pred_field - field.z);
 fprintf('\nRMS Error: %.2f\n', current_rms_error)
 
+arc_length = 0.0;
+for pi = 2 : length(u1.s_loc)
+    arc_length = arc_length + norm(u1.s_loc(pi,:) - u1.s_loc(pi-1,:));
+end
+
+fprintf('Arc length: %f\n', arc_length)

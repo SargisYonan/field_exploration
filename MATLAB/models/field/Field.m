@@ -11,7 +11,23 @@ classdef Field < handle
    
     methods
         % class constructor
-        function field_obj = Field(width, height)
+        
+        % myField = Field(w,h)
+        % myField = Field(pre_generated_map)
+        
+        function field_obj = Field(varargin)
+                    
+            if (length(varargin) == 1)
+                field_obj.z = varargin{1};
+                field_obj.width = size(field_obj.z, 1);
+                field_obj.height = size(field_obj.z, 2);
+                
+                return
+            end
+            
+            width = varargin{1};
+            height = varargin{2};
+                        
             field_obj.width = width;
             field_obj.height = height;
             
