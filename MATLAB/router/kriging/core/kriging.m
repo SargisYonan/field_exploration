@@ -1,11 +1,11 @@
-function [zi,s2zi] = kriging(vstruct,x,y,z,xi,yi,chunksize)
+function [zi,s2zi] = kriging(vstruct,x,y,z,xi,yi,var_only,chunksize)
 
 % interpolation with ordinary kriging in two dimensions
 %
 % Syntax:
 %
-%     [zi,zivar] = kriging(vstruct,x,y,z,xi,yi)
-%     [zi,zivar] = kriging(vstruct,x,y,z,xi,yi,chunksize)
+%     [zi,zivar] = kriging(vstruct,x,y,z,xi,yi,var_only)
+%     [zi,zivar] = kriging(vstruct,x,y,z,xi,yi,var_only,chunksize)
 %
 % Description:
 %
@@ -37,6 +37,7 @@ function [zi,s2zi] = kriging(vstruct,x,y,z,xi,yi,chunksize)
 %     x,y       coordinates of observations
 %     z         values of observations
 %     xi,yi     coordinates of locations for predictions 
+%     var_only  True to only calculate vars.
 %     chunksize nr of elements in zi that are processed at one time.
 %               The default is 100, but this depends largely on your 
 %               available main memory and numel(x).
@@ -100,9 +101,9 @@ x  = x(:);
 y  = y(:);
 z  = z(:);
 
-if nargin == 6;
+if nargin == 7;
     chunksize = 100;
-elseif nargin == 7;
+elseif nargin == 8;
 else
     error('wrong number of input arguments')
 end
@@ -151,15 +152,15 @@ A = pinv(A);
 % we also need to expand z
 z  = [z;0];
 
-% allocate the output zi
-zi = nan(numest,1);
-
-if nargout == 2;
-    s2zi = nan(numest,1);
-    krigvariance = true;
+if (var_only == false)
+    % allocate the output zi
+    zi = nan(numest,1);
 else
-    krigvariance = false;
+    zi = 0;
 end
+
+s2zi = nan(numest,1);
+krigvariance = true;
 
 % parametrize engine
 nrloops   = ceil(numest/chunksize);
@@ -169,9 +170,6 @@ nrloops   = ceil(numest/chunksize);
 
 % now loop 
 for r = 1:nrloops;
-    % waitbar 
-%     waitbar(r / nrloops,h);
-    
     % built chunks
     if r<nrloops
         IX = (r-1)*chunksize +1 : r*chunksize;
@@ -197,9 +195,11 @@ for r = 1:nrloops;
     % solve system
     lambda = A*b;
     
-    % estimate zi
-    zi(IX)  = lambda'*z;
-    
+    if (var_only == false)
+        % estimate zi
+        zi(IX)  = lambda'*z;
+    end
+
     % calculate kriging variance
     if krigvariance
         s2zi(IX) = sum(b.*lambda,1);
@@ -207,11 +207,10 @@ for r = 1:nrloops;
     
 end
 
-% close waitbar
-% close(h)
-
-% reshape zi
-zi = reshape(zi,sizest);
+if (var_only == false)
+    % reshape zi
+    zi = reshape(zi,sizest);
+end
 
 if krigvariance
     s2zi = reshape(s2zi,sizest);

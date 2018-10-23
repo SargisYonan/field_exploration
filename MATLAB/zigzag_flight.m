@@ -41,7 +41,7 @@ addpath(genpath(pwd))
 %% Vehicle/Field Dynamics Parameters
 
 % square size of the field
-width = 30;
+width = 200;
 
 top = false;
 bottom = true;
