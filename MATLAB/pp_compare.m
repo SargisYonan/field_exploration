@@ -22,8 +22,8 @@ disp('Loading Field libraries into path...')
 addpath(genpath(pwd))
 
 %%
-field_sizes = [50]; %[20, 50];
-max_percentage_list =  [[.5, .75]];%[[0.20, 0.30, 0.40, 0.50, 0.75]; 
+field_sizes = [100]; %[20, 50];
+max_percentage_list =  [[.05]];%[[0.20, 0.30, 0.40, 0.50, 0.75]; 
                        %[0.10, 0.20, 0.50, 0.75]];
 
 for field_size_ix = 1 : length(field_sizes)
@@ -34,7 +34,7 @@ for percentage_ix = 1:length(max_percentage_list)
 max_percentage = max_percentage_list(field_size_ix, percentage_ix);
 
 %% Generate n_fields number of fields of size field_size
-n_fields = 5;
+n_fields = 2;
 
 %% Compare explorers
 nhv_wps = zeros(1, n_fields);
@@ -67,13 +67,13 @@ end
 %%
 figure();
 
-semilogy(nonzero_means(zz_avg_vars) ./ zz_avg_vars(1), '-k', 'LineWidth', 2)
+semilogy(nonzero_means(zz_avg_vars), '-k', 'LineWidth', 2)
 hold on
-semilogy(nonzero_means(nhv_avg_vars) ./ nhv_avg_vars(1), '-r', 'LineWidth', 2)
+semilogy(nonzero_means(nhv_avg_vars), '-r', 'LineWidth', 2)
 hold on
-semilogy(nonzero_means(nnhv_avg_vars) ./ nnhv_avg_vars(1), '-g', 'LineWidth', 2)
+semilogy(nonzero_means(nnhv_avg_vars), '-g', 'LineWidth', 2)
 hold on
-semilogy(nonzero_means(mcpp_avg_vars) ./ mcpp_avg_vars(1), '-b', 'LineWidth', 2)
+semilogy(nonzero_means(mcpp_avg_vars), '-b', 'LineWidth', 2)
 
 xlabel('Replanning Iteration', 'FontSize', 16, 'Interpreter', 'Latex')
 ylabel('Mean Field Prediction Variance', 'FontSize', 16, 'Interpreter', 'Latex')
