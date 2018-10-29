@@ -32,13 +32,17 @@ classdef Field < handle
             field_obj.height = height;
             
             % create random field with autocorrelation
-            mean = 100;
-            std = 100;
+            std = 1;
             [X,~] = meshgrid(0: width - 1, 0: height - 1);
 %             Z = mean + std*randn(size(X)); % normally distributed -- used rand() for a single round point
             Z = randn(size(X)); % normally distributed -- used rand() for a single round point
-        
-            sigma = 48;
+            
+            if (length(varargin) == 3)
+                sigma = varargin{3};
+            else
+                sigma = width;
+            end
+            
 
             % autocorrelation
             field_obj.z = std*imfilter(Z, fspecial('gaussian', [width, height], sigma));

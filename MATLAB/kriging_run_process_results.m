@@ -11,7 +11,7 @@ end
 for i = 1 : size(pred_field_recs, 3)     
     % average element wise RMS errors
     pred_field = var_field_recs(:,:,i);
-    avg_pred_errs(i) = sqrt(mean(abs(pred_field(:).^2 - actual_field(:).^2)));
+    avg_pred_errs(i) = sqrt( mean2( (pred_field - actual_field).^2 ) );
     
 end
 

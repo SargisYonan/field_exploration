@@ -1,17 +1,19 @@
 % A software in the loop simulation of a demonstration of the autonomous
 % path planning and prediction of an unknown field using the Kriging Method
 
-% Developed by Sargis S Yonan
-% Masters Thesis
+% @author Sargis S Yonan
+% @date August 2017
+%
+% @brief Simulation for Computer Engineering Masters Thesis
+% 
 % Department of Computer Engineering
 % Autonomous Systems Lab
 % University of California, Santa Cruz
+%
+% Last Revised October 2018
 
-% August 2017
-% Last Revised June 2018
 
-
-%%  Get the environment setup
+%% Get the environment setup
 
 clc;
 clear all;
@@ -41,14 +43,18 @@ addpath(genpath(pwd))
 %% Vehicle/Field Dynamics Parameters
 
 % square size of the field
-width = 30;
+width = 50;
 
 % initial positon of the UAV
 x0 = 1;
 y0 = 1;
-% the turning radius of the UAV
-r = 1;
 
+% the turning radius of the UAV
+r = 0.001;
+
+% prediction area
+[xi, yi] = meshcoor([1 1], width, width);
+        
 %% Kriging Parameters
 a = 100; % initial seed for fmincon's range search
 c = 20; % initial seed for fmincon's sill search
@@ -58,7 +64,7 @@ c = 20; % initial seed for fmincon's sill search
 fprintf('Creating a field size %dx%d\n\n', width, width)
 % generate the field object to be observed
 field = Field(width, width);
-
+ 
 fprintf('allocating and initializing memory for the predicted field\n')
 % the predicted field - initially nothing observed
 pred_field = zeros(size(field.z));
@@ -69,7 +75,10 @@ var_field = inf .* ones(size(field.z));
 u1 = UAV([x0 y0]);
 u1.set_radius(r);
 u1.set_field(field);
-u1.set_destination(floor([5 5])); 
+u1.set_destination(floor([width, width])); 
+
+% Only cover at most a percentage of the field
+uav_fuel = .2 * width^2;
 
 fprintf('UAV created:\n')
 fprintf('\tDubins Vehicle radius: %.2f\n', u1.radius)
@@ -94,12 +103,28 @@ end
 
 %% Simulation
 
+% records
+var_field_recs = zeros(width, width, 50);
+wps = 1;
+
 max_var = inf;
 last_max_var = inf;
-epsilon_var = 0.01;
+epsilon_var = 1;
 
 pathfound = [];
 fprintf('Simulation starting...\n')
+
+if (live_plot)
+    figure(live_plot_figure);
+
+    % actual field - upper left quad
+    h1=subplot(2,2,1);
+    imagesc(field.z')
+    title('Actual Field')
+    colorbar;
+    pause(0.01);
+end
+
 while (true)
     
     u1.update();
@@ -115,16 +140,17 @@ while (true)
         fprintf('Fitting a continuous variogram\n')
         [a,c,n,vstruct] = variogramfit(d.distance,d.val,a,c,[],'plotit',false);
         
-        prediction_radius = width; %round(2*a);
-        fprintf('Selecting radius of %f around coordinates [%.2f,%.2f] for prediction\n', ...
-            prediction_radius, u1.curr_pos(1), u1.curr_pos(2))
-        [xi, yi] = meshcoor(floor(u1.curr_pos), prediction_radius, width);
+        % if you want unbounded predictions. Not suggested.
+        % vstruct.type = '';
         
+        % Run a "bounded" Kriging prediciton. This means that we are only
+        % considering weights within our learned "range" distance.
         fprintf('Running Kriging prediction on [%d] selected points...\n', length(xi))
         [zi,s2zi] = kriging(vstruct, u1.s_loc(:,1),u1.s_loc(:,2), ...
         u1.samples(:), ...
         xi, yi, ...
-        1000);
+        false, ...
+        length(u1.samples));
 
         fprintf('Loading predictions and variances into field memory\n')
         for ix = 1:length(xi)
@@ -132,26 +158,61 @@ while (true)
             var_field(round(xi(ix)),round(yi(ix))) = s2zi(ix);
         end
 
-        fprintf('Calculating next trajectory\n')
-        max_var = max(max(var_field));
-        if ( abs(last_max_var - max_var) <= epsilon_var ...
-          && area_covered > 0.05 )
-            fprintf('Var epsilon: %f > e=%f\n', abs(last_max_var - max_var), epsilon_var)
-            fprintf('\nROI of exploration minimized\n') 
-            fprintf('\n\nExploration mission complete\n\n') 
-            break;
-        else
-            fprintf('Var epsilon: %f > e=%f\n', abs(last_max_var - max_var), epsilon_var)
+        % It could take a while to compute the trajectory to just plot the
+        % known fields for this iteration now and after.
+        if (live_plot)
+            figure(live_plot_figure);
+            
+            % pred. field - upper right quad
+            h2=subplot(2,2,2);
+            imagesc(pred_field') % trans() because of the way imagesc works
+            current_rms_error = norm(pred_field - field.z);
+            title(strcat(['Predicted Field - RMS Error: ', num2str(current_rms_error)]))
+            colorbar;
+            
+            % var field - lower left quad
+            h3=subplot(2,2,3);     
+            %surf(var_field);
+            imagesc(var_field') % trans() because of the way imagesc works
+            hold on
+            plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
+            hold off
+            colormap(h3,hot(8))
+            colorbar;
+            title('Variance Field')
+            
+            % traced field - lower right quad
+            h4 = subplot(2,2,4);       
+            plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5)
+            hold on
+            plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['g',u1.cursor]), 'LineWidth', 2)
+            hold on
+            plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
+            hold off
+            set(h4,'Ydir','reverse');
+            title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
+            % set the boundry of the frame
+            axis([-1 width+1 -1 width+1]);
+            
+            pause(.01)
         end
         
-        last_max_var = max_var;
         
-        varnum = 30; % number of of variances to pick off
-        [pathfound, neighbors] = krigpathfind(varnum, var_field, u1.curr_pos);
+        var_field_recs(:,:,wps) = var_field;   
+        wps = wps + 1;
+        
+        [pathfound] = optimal_kriging_pathfinder(var_field, pred_field, u1.curr_pos, u1.s_loc, u1.samples(:), xi, yi, a, c);
 
-        u1.set_destination(floor( neighbors(pathfound(1),1:2) ));     
+        if uav_fuel - area_covered <= 0
+            fprintf('No fuel remaining.\n')
+            fprintf('Path planner terminated.\n')
+            
+            break;
+        end
+        
+        u1.set_destination(pathfound(1,:));     
         if (length(pathfound) > 1)
-            pathfound = pathfound(2:end);
+            pathfound = pathfound(2:end, :);
         else
             pathfound = [];
         end
@@ -195,7 +256,7 @@ while (true)
             hold on
             plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
             hold on
-            plot(neighbors(pathfound(:),1), neighbors(pathfound(:),2), 'rx', 'LineWidth', 2)
+            plot(pathfound(:, 1), pathfound(: ,2), 'rx', 'LineWidth', 2)
             hold off
             set(h4,'Ydir','reverse');
             title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
@@ -211,26 +272,29 @@ while (true)
         end
        
     elseif (u1.waypoint_reached && ~isempty(pathfound))
-        u1.set_destination(floor( neighbors(pathfound(1),1:2) ));
-        pathfound = pathfound(2:end);
+        u1.set_destination(pathfound(1, :));
+        pathfound = pathfound(2:end, :);
         
-        h4 = subplot(2,2,4);       
-        plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5)
-        hold on
-        plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['g',u1.cursor]), 'LineWidth', 2)
-        hold on
-        plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
-        hold on
-        plot(neighbors(pathfound(:),1), neighbors(pathfound(:),2), 'rx', 'LineWidth', 2)        
-        hold off
-        set(h4,'Ydir','reverse');
-        title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
-        % set the boundry of the frame
-        axis([-1 width+1 -1 width+1]);
-        pause(.01)
+        if (live_plot)
+            h4 = subplot(2,2,4);       
+            plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5)
+            hold on
+            plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['g',u1.cursor]), 'LineWidth', 2)
+            hold on
+            plot(u1.dest_pos(1), u1.dest_pos(2), 'bx', 'LineWidth', 2)
+            hold on
+            plot(pathfound(:, 1), pathfound(: ,2), 'rx', 'LineWidth', 2)        
+            hold off
+            set(h4,'Ydir','reverse');
+            title(strcat(['UAV Trace - Area Covered: ', num2str(area_covered * 100), '%']))
+            % set the boundry of the frame
+            axis([-1 width+1 -1 width+1]);
+            pause(.01)
+        end
     end
 end
 
+wps = wps - 1;
 
 if (live_plot)
     figure(live_plot_figure);
@@ -291,3 +355,5 @@ for pi = 2 : length(u1.s_loc)
 end
 
 fprintf('Arc length: %f\n', arc_length)
+
+

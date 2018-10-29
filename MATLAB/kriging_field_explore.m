@@ -9,7 +9,7 @@
 %
 % Last Revised October 2018
 
-function [wps, pred_field_recs, var_field_recs] = kriging_field_explore(X0, field, method, max_scan_percentage, live_plot, save_image_path)
+function [wps, pred_field_recs, var_field_recs, percentages] = kriging_field_explore(X0, field, method, max_scan_percentage, live_plot, save_image_path)
 
 
 %% Vehicle/Field Dynamics Parameters
@@ -65,6 +65,7 @@ var_field_recs = zeros(width, width, 50);
 pred_field_recs = zeros(width, width, 50);
 
 wps = 1;
+percentages = [];
 
 pathfound = [];
 
@@ -150,6 +151,7 @@ while (true)
             pred_field_recs(:,:,end + 1) = pred_field;
         end
         
+        percentages(end + 1) = area_covered;
         wps = wps + 1;
         
         if (strcmp(method, 'mc'))
