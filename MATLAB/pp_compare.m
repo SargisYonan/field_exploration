@@ -23,10 +23,10 @@ addpath(genpath(pwd))
 
 %%
 
-rand_seeds = [2] %[2, 3, 4];
-field_sizes = [50]%[50, 100];
-max_percentage_list =  [[0.10]]% 0.20]]%[[0.10, 0.20, 0.30]; 
-                       %[0.10, 0.20, 0.30]];       
+rand_seeds = [2, 3];
+field_sizes = [50, 100];
+max_percentage_list = [[0.4]; [0.4]]; 
+                      %[0.10]]%, 0.20, 0.30]];       
 
 %%
 
@@ -36,12 +36,12 @@ for fi = 1 : length(rand_seeds)
 rng(rand_seeds(fi));
 for field_size_ix = 1 : length(field_sizes)
 field_size = field_sizes(field_size_ix);
-autocorrelation_sigmas = [round(field_size/8)]% round(field_size/4) round(field_size/2) field_size];
+autocorrelation_sigmas = [round(field_size/8) round(field_size/4) round(field_size/2) field_size];
 
 for autocor_sigma_itor = 1 : length(autocorrelation_sigmas)
 autocorrelation_sigma = autocorrelation_sigmas(autocor_sigma_itor);
 
-for percentage_ix = 1:length(max_percentage_list)
+for percentage_ix = 1:size(max_percentage_list,2)
     
 %% Percent Scan Max
 max_percentage = max_percentage_list(field_size_ix, percentage_ix);
@@ -83,18 +83,20 @@ field = Field(field_size, field_size, autocorrelation_sigma);
 [mcpp_wps, pred_field_recs, var_field_recs, mcpp_perc] = kriging_field_explore([1 1], field, 'mc', max_percentage, false, strcat(['mc', filename]));
 [mcpp_avg_vars, mcpp_pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:mcpp_wps), pred_field_recs(:,:,1:mcpp_wps), field.z);
 
+%%
 if (max_percentage == 0.5)
     r = (max_percentage * field_size) / (15);
 elseif (max_percentage == 0.3)
     r = (max_percentage * field_size) / (5);
+elseif (max_percentage == 0.4)
+    r = (max_percentage * field_size) / (3);
 elseif (max_percentage == 0.2)
     r = (max_percentage * field_size) / (2);
 elseif (max_percentage == 0.1)
-    r = (max_percentage * field_size) / (0.5);
+    r = (max_percentage * field_size) / 0.5;
 end
-[zz_wps, pred_field_recs, var_field_recs, zz_perc] = zigzagrouter([field_size 1], field, r, max_percentage, false, strcat(['zz', filename]));
+[zz_wps, pred_field_recs, var_field_recs, zz_perc] = zigzagrouter([1 1], field, r, max_percentage, false, strcat(['zz', filename]));
 [zz_avg_vars, zz_pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:zz_wps), pred_field_recs(:,:,1:zz_wps), field.z);
-
 %%
 
 [ap_vars, ap_errs] = apriori_errors(field);

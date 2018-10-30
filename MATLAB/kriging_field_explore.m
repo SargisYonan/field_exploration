@@ -21,7 +21,7 @@ x0 = X0(1);
 y0 = X0(2);
 
 % the turning radius of the UAV
-r = 0.001;
+r = 0.00001;
 
 width = field.width;
 
@@ -333,5 +333,7 @@ end
 
 close(wb);
 
+var_field_recs = var_field_recs(:,:,1:wps);
+pred_field_recs = pred_field_recs(:,:,1:wps);
 end
 
