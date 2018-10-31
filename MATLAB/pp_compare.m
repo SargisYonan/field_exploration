@@ -25,7 +25,7 @@ addpath(genpath(pwd))
 
 rand_seeds = [2, 3];
 field_sizes = [50, 100];
-max_percentage_list = [[0.4]; [0.4]]; 
+max_percentage_list = [[0.1]; [0.4]]; 
                       %[0.10]]%, 0.20, 0.30]];       
 
 %%
@@ -89,9 +89,9 @@ if (max_percentage == 0.5)
 elseif (max_percentage == 0.3)
     r = (max_percentage * field_size) / (5);
 elseif (max_percentage == 0.4)
-    r = (max_percentage * field_size) / (3);
-elseif (max_percentage == 0.2)
     r = (max_percentage * field_size) / (2);
+elseif (max_percentage == 0.2)
+    r = (max_percentage * field_size) / (1.5);
 elseif (max_percentage == 0.1)
     r = (max_percentage * field_size) / 0.5;
 end
