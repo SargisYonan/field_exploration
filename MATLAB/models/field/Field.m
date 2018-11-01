@@ -6,6 +6,8 @@ classdef Field < handle
         width = 0;
         height = 0;
         
+        sigma = 0;
+        
         z = [];
     end
    
@@ -39,6 +41,7 @@ classdef Field < handle
             
             if (length(varargin) == 3)
                 sigma = varargin{3};
+                field_obj.sigma = sigma;
             else
                 sigma = width;
             end
