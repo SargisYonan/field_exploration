@@ -21,7 +21,7 @@ x0 = X0(1);
 y0 = X0(2);
 
 % the turning radius of the UAV
-r = 0.00001;
+r = 0.000001;
 
 width = field.width;
 
