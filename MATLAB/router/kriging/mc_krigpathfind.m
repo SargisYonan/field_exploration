@@ -79,7 +79,7 @@ end
 calculated_path(pn,:) = closest_variance_coor;
 
 new_samples = zeros(size(calculated_path, 1), 1);
-for pi = 1 : length(calculated_path)
+for pi = 1 : size(calculated_path, 1)
     new_samples(pi) = predicted_field(calculated_path(pi,1), calculated_path(pi,2));
 end
 new_samples = [samples ; new_samples];

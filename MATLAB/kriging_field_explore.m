@@ -162,6 +162,8 @@ while (true)
             [pathfound] = nhv_krigpathfind(var_field);
         elseif (strcmp(method, 'nnhv'))
             [pathfound] = nhv_sets_krigpathfind(var_field, pred_field, u1.curr_pos, u1.s_loc, u1.samples(:), xi, yi, a, c);
+        elseif (strcmp(method, 'poi'))
+            [pathfound] = npoi_krigpathfind( var_field, pred_field );
         else
             close(wb);
             fprintf('Error! Improper method type.\n')

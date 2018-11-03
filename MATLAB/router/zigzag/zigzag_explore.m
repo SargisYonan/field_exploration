@@ -263,4 +263,3 @@ var_field_recs = var_field_recs(:,:,1:wps);
 pred_field_recs = pred_field_recs(:,:,1:wps);
 
 end
-

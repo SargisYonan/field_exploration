@@ -1,3 +1,5 @@
+function [ ] = pp_run( rand_seeds, field_sizes, max_percentage_list, autocorrelation_sigma_dividers )
+
 % A script to compare three custom path planners against a lawnmower
 % explorer.
 %
@@ -12,31 +14,21 @@
 %
 % Last Revised October 2018
 
-clc;
-clear all;
-close all;
-
 %% load the libraries in the pwd
 disp('Loading UAV libraries into path...')
 disp('Loading Field libraries into path...')
 addpath(genpath(pwd))
 
 %%
-
-rand_seeds = [2];
-field_sizes = [20];
-max_percentage_list = [[0.05]]; 
-                      %[0.10]]%, 0.20, 0.30]];       
-
-%%
-
-
-%%
 for fi = 1 : length(rand_seeds)
 rng(rand_seeds(fi));
 for field_size_ix = 1 : length(field_sizes)
 field_size = field_sizes(field_size_ix);
-autocorrelation_sigmas = [round(field_size/8) round(field_size/4) round(field_size/2) field_size];
+
+autocorrelation_sigmas = zeros(length(autocorrelation_sigma_dividers), 1);
+for sitor = 1 : length(autocorrelation_sigma_dividers)
+    autocorrelation_sigmas(sitor) = field_size / autocorrelation_sigma_dividers(sitor);
+end
 
 for autocor_sigma_itor = 1 : length(autocorrelation_sigmas)
 autocorrelation_sigma = autocorrelation_sigmas(autocor_sigma_itor);
@@ -184,4 +176,8 @@ grid on
 end
 end
 end
+
+
+exit
 end
+
