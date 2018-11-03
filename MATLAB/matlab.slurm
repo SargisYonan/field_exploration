@@ -10,132 +10,134 @@
 
 # This sucks, but this is the only way we can get around the license timeout for MATLAB 2017B on the Hummingbird Compute Cluster...
 
+cd field_exploration/MATLAB
+
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],200\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],200\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],4\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],4\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],2\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],2\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],1\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.1]],1\)
 module unload matlab
 
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],200\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],200\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],4\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],4\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],2\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],2\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],1\)
-module unload matlab
-
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],200\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],4\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],2\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],1\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.2]],1\)
 module unload matlab
 
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],200\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],200\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],4\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],4\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],2\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],2\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],1\)
-module unload matlab
-
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],200\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],4\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],2\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],1\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.3]],1\)
 module unload matlab
 
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],200\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],200\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],4\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],4\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],2\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],2\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],1\)
-module unload matlab
-
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],200\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],4\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],2\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],1\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.4]],1\)
 module unload matlab
 
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],200\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],200\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],4\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],4\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],2\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],2\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],1\)
-module unload matlab
-
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],200\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],4\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],2\)
-module unload matlab
-module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],1\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([2],[200],[[.5]],1\)
 module unload matlab
 
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],200\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],200\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],4\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],4\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],2\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],2\)
 module unload matlab
 module load matlab
-/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -r -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],1\)
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.1]],1\)
+module unload matlab
+
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],200\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],4\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],2\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.2]],1\)
+module unload matlab
+
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],200\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],4\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],2\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.3]],1\)
+module unload matlab
+
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],200\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],4\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],2\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.4]],1\)
+module unload matlab
+
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],200\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],4\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],2\)
+module unload matlab
+module load matlab
+/hb/software/apps/matlab/2017b/bin/matlab -nodisplay -nodesktop -r pp_run\([3],[200],[[.5]],1\)
 module unload matlab
