@@ -15,132 +15,132 @@ MATLAB=matlab
 
 cd field_exploration/MATLAB
 
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],100\)
+# module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.1]],200\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.1]],4\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],2\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.1]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.1]],1\)
-module unload matlab
-
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.2]],200\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.2]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.2]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.2]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],1\)
 module unload matlab
 
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],100\)
+# module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.3]],200\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.3]],4\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],2\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.3]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.3]],1\)
-module unload matlab
-
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.4]],200\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.4]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.4]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.4]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],1\)
 module unload matlab
 
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],100\)
+# module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.5]],200\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.5]],4\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],2\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.5]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([2],[200],[[.5]],1\)
-module unload matlab
-
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.1]],200\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.1]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.1]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.1]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],1\)
 module unload matlab
 
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],100\)
+# module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.2]],200\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.2]],4\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],2\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.2]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.2]],1\)
-module unload matlab
-
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.3]],200\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.3]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.3]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.3]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],1\)
 module unload matlab
 
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],100\)
+# module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.4]],200\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.4]],4\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],2\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.4]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.4]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],1\)
 module unload matlab
 
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],100\)
+# module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.5]],200\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.5]],4\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],2\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.5]],2\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],1\)
+module unload matlab
+
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],100\)
+# module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],4\)
 module unload matlab
 module load matlab
-$MATLAB -nodisplay -r pp_run\([3],[200],[[.5]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],2\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],1\)
+module unload matlab
+
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],100\)
+# module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],4\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],2\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],1\)
+module unload matlab
+
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],100\)
+# module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],4\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],2\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],1\)
+module unload matlab
+
+# module load matlab
+# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],100\)
+# module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],4\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],2\)
+module unload matlab
+module load matlab
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],1\)
 module unload matlab
