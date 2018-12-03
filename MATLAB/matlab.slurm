@@ -18,84 +18,11 @@ cd field_exploration/MATLAB
 # module load matlab
 # $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],100\)
 # module unload matlab
+
 module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],1\)
+$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],100\)
 module unload matlab
 
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.2]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.3]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.4]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.5]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.1]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],100\)
-# module unload matlab
 module load matlab
 $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],4\)
 module unload matlab
@@ -106,9 +33,6 @@ module load matlab
 $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],1\)
 module unload matlab
 
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],100\)
-# module unload matlab
 module load matlab
 $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],4\)
 module unload matlab
@@ -117,30 +41,4 @@ $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],2\)
 module unload matlab
 module load matlab
 $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.4]],1\)
-module unload matlab
-
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],100\)
-# module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.5]],1\)
 module unload matlab

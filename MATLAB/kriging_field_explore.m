@@ -34,7 +34,7 @@ yi = yi(:);
 a = 40; % initial seed for fmincon's range search
 c = 5; % initial seed for fmincon's sill search
 
-initial_waypoint = [width, width];
+initial_waypoint = ceil([width/2, width/2]);
 
 pred_field = zeros(size(field.z));
 var_field = inf .* ones(size(field.z));
@@ -162,6 +162,14 @@ while (true)
             [pathfound] = nhv_krigpathfind(var_field);
         elseif (strcmp(method, 'nnhv'))
             [pathfound] = nhv_sets_krigpathfind(var_field, pred_field, u1.curr_pos, u1.s_loc, u1.samples(:), xi, yi, a, c);
+        elseif (strcmp(method, 'greedy'))
+            
+            maximum_variances = sort(unique(max(var_field)), 'descend');
+            [vix, viy] = find(var_field == maximum_variances(1));
+            pathfound = [vix(1), viy(1)];
+            thetan = atan2d(pathfound(2)-u1.curr_pos(2), pathfound(1)-u1.curr_pos(1));
+            pathfound = u1.curr_pos + width/10*[cosd(thetan) sind(thetan)];
+            
         elseif (strcmp(method, 'poi'))
             [pathfound] = npoi_krigpathfind( var_field, pred_field );
         else
