@@ -24,6 +24,8 @@ fprintf('Field Width: %d\n', field_size)
 fprintf('Percentage Scan: %f\n', percentage_scan)
 fprintf('Sigma Field: %d\n', sigma_field)
 
+percentage_scan = percentage_scan / 100;
+
 rng(rand_seed);
 field_dir = 'fields/';
 
