@@ -17,8 +17,8 @@ cd field_exploration/MATLAB
 
 declare -a sigma_field_dividers=("100" "4" "2" "1")
 declare -a percentage_scans=("10" "20" "30")
-field_size_width=100
-random_seed=31
+field_size_width="100"
+random_seed="31"
 
 for perc in "${percentage_scans[@]}"
 do
