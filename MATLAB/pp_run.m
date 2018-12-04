@@ -19,6 +19,11 @@ disp('Loading UAV libraries into path...')
 disp('Loading Field libraries into path...')
 addpath(genpath(pwd))
 
+disp(rand_seeds)
+disp(field_sizes)
+disp(max_percentage_list)
+disp(autocorrelation_sigma_dividers)
+
 %%
 for fi = 1 : length(rand_seeds)
 rng(rand_seeds(fi));
