@@ -21,6 +21,7 @@ field_size_width=100
 random_seed=31
 
 module purge
+module load hb hb-gnu
 
 for div in "${sigma_field_dividers[@]}"
 do
