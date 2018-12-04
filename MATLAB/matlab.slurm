@@ -28,23 +28,23 @@ do
 	for perc in "${percentage_scans[@]}"
 	do
 		module load matlab/2017b
-		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'zz\', $random_seed, $field_size_width, "$perc", "$div"\)
+		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'zz\',$random_seed,$field_size_width,"$perc","$div"\)
 		module unload matlab/2017b
 	done
 
 	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nhv\', $random_seed, $field_size_width, 30, "$div"\)
+	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nhv\',$random_seed,$field_size_width,30,"$div"\)
 	module unload matlab/2017b
 
 	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nnhv\', $random_seed, $field_size_width, 30, "$div"\)
+	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nnhv\',$random_seed,$field_size_width,30,"$div"\)
 	module unload matlab/2017b
 
 	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'mc\', $random_seed, $field_size_width, 30, "$div"\)
+	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'mc\',$random_seed,$field_size_width,30,"$div"\)
 	module unload matlab/2017b
 
 	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'greedy\', $random_seed, $field_size_width, 30, "$div"\)
+	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'greedy\',$random_seed,$field_size_width,30,"$div"\)
 	module unload matlab/2017b
 done
