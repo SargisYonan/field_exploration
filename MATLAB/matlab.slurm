@@ -8,37 +8,25 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mem=64G
 
-# This sucks, but this is the only way we can get around the license timeout for MATLAB 2017B on the Hummingbird Compute Cluster...
-
 MATLAB=matlab
 #/hb/software/apps/matlab/2017b/bin/matlab
 
+#usage: sbatch this_file
+
 cd field_exploration/MATLAB
 
-# module load matlab
-# $MATLAB -nodisplay -nodesktop -r pp_run\([2],[100],[[.1]],100\)
-# module unload matlab
+declare -a sigma_field_dividers=("100" "4" "2" "1")
+declare -a percentage_scans=("10" "20" "30")
+field_size_width=100
+random_seed=31
 
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],100\)
-module unload matlab
-
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.2]],1\)
-module unload matlab
-
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],4\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],2\)
-module unload matlab
-module load matlab
-$MATLAB -nodisplay -nodesktop -r pp_run\([3],[100],[[.3]],1\)
-module unload matlab
+for perc in "${percentage_scans[@]}"
+do
+	for div in "${sigma_field_dividers[@]}"
+	do
+		module load matlab
+		$MATLAB -nodisplay -nodesktop -r 
+		pp_run\([$random_seed],[$field_size_width],[[$perc]], $div\)
+		module unload matlab
+	done
+done
