@@ -164,11 +164,35 @@ while (true)
             [pathfound] = nhv_sets_krigpathfind(var_field, pred_field, u1.curr_pos, u1.s_loc, u1.samples(:), xi, yi, a, c);
         elseif (strcmp(method, 'greedy'))
             
-            maximum_variances = sort(unique(max(var_field)), 'descend');
-            [vix, viy] = find(var_field == maximum_variances(1));
-            pathfound = [vix(1), viy(1)];
-            thetan = atan2d(pathfound(2)-u1.curr_pos(2), pathfound(1)-u1.curr_pos(1));
-            pathfound = u1.curr_pos + width/10*[cosd(thetan) sind(thetan)];
+            step_size = 3;
+            pathfound = [-1 -1];
+            max_candidate_var_found = 0;
+            % make a circle of candidate locations
+            for thetad = 0 : 360
+                candidate_point = u1.curr_pos + step_size*[cosd(thetad) sind(thetad)];
+                
+                candidate_point = ceil(candidate_point);
+                if (candidate_point(1) > width)
+                    candidate_point(1) = width;
+                end
+                if (candidate_point(1) < 1)
+                    candidate_point(1) = 1;
+                end
+                
+                if (candidate_point(2) > width)
+                    candidate_point(2) = width;
+                end
+                if (candidate_point(2) < 1)
+                    candidate_point(2) = 1;
+                end
+                
+                candidate_var = var_field(candidate_point(1), candidate_point(2));
+                if (candidate_var > max_candidate_var_found)
+                   pathfound = candidate_point;
+                   max_candidate_var_found = candidate_var;
+                end
+                
+            end
             
         elseif (strcmp(method, 'poi'))
             [pathfound] = npoi_krigpathfind( var_field, pred_field );

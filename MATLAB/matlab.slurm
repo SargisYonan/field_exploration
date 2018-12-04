@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #SBATCH --job-name=pp_comparisons
 #SBATCH --output=pp_runs.%j.out
 #SBATCH --nodes=1
@@ -10,6 +11,8 @@
 
 #usage: sbatch this_file
 
+MATLAB=matlab
+
 cd field_exploration/MATLAB
 
 declare -a sigma_field_dividers=(100 4 2 1)
@@ -19,12 +22,28 @@ random_seed=31
 
 module purge
 
-for perc in "${percentage_scans[@]}"
+for div in "${sigma_field_dividers[@]}"
 do
-	for div in "${sigma_field_dividers[@]}"
+	for perc in "${percentage_scans[@]}"
 	do
-		module load matlab
-		matlab -nodisplay -nodesktop -r pp_run\($random_seed,$field_size_width,"$perc","$div"\)
-		module unload matlab
+		module load matlab/2017b
+		$MATLAB -nodisplay -nodesktop -r pp_run_method(\'zz\', $random_seed, $field_size_width, "$perc", "$div" )
+		module unload matlab/2017b
 	done
+
+	module load matlab/2017b
+	$MATLAB -nodisplay -nodesktop -r pp_run_method(\'nhv\', $random_seed, $field_size_width, 30, "$div" )
+	module unload matlab/2017b
+
+	module load matlab/2017b
+	$MATLAB -nodisplay -nodesktop -r pp_run_method(\'nnhv\', $random_seed, $field_size_width, 30, "$div" )
+	module unload matlab/2017b
+
+	module load matlab/2017b
+	$MATLAB -nodisplay -nodesktop -r pp_run_method(\'mc\', $random_seed, $field_size_width, 30, "$div" )
+	module unload matlab/2017b
+
+	module load matlab/2017b
+	$MATLAB -nodisplay -nodesktop -r pp_run_method(\'greedy\', $random_seed, $field_size_width, 30, "$div" )
+	module unload matlab/2017b
 done
