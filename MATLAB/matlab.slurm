@@ -25,8 +25,7 @@ do
 	for div in "${sigma_field_dividers[@]}"
 	do
 		module load matlab
-		$MATLAB -nodisplay -nodesktop -r 
-		pp_run\([$random_seed],[$field_size_width],[[$perc]], $div\)
+		$MATLAB -nodisplay -nodesktop -r pp_run\([$random_seed],[$field_size_width],[[$perc]], $div\)
 		module unload matlab
 	done
 done
