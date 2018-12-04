@@ -6,7 +6,7 @@ function [ ] = pp_run( rand_seeds, field_sizes, max_percentage_list, autocorrela
 % @author Sargis S Yonan
 % @date August 2017
 %
-% @brief Simulation for Computer Engineering Masters Thesis
+
 % 
 % Department of Computer Engineering
 % Autonomous Systems Lab
@@ -64,22 +64,60 @@ filename = strcat(['_', num2str(100 * max_percentage), ...
 'p_' num2str(field_size), 'x', num2str(field_size), ...
 '_sf_', num2str(autocorrelation_sigma), '_seed_', num2str(rand_seeds(fi)), '.png']);
 
+savename = strcat(['_', num2str(100 * max_percentage), ...
+'p_' num2str(field_size), 'x', num2str(field_size), ...
+'_sf_', num2str(autocorrelation_sigma), '_seed_', num2str(rand_seeds(fi)), '_data']);
+
 field = Field(field_size, field_size, autocorrelation_sigma);
+save(strcat(['field_', num2str(field_size), 'x', num2str(field_size), ...
+'_sf_', num2str(autocorrelation_sigma), '_seed_', num2str(rand_seeds(fi))]), ...
+'field');
+
+[ap_vars, ap_errs] = apriori_errors(field);
 
 [nhv_wps, pred_field_recs, var_field_recs, nhv_perc] = kriging_field_explore([1 1], field, 'nhv', max_percentage, false, strcat(['nhv', filename]));
 [nhv_avg_vars, nhv_pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:nhv_wps), pred_field_recs(:,:,1:nhv_wps), field.z);
+perc = nhv_perc;
+save(strcat(['nhv', '_percs', savename]), 'perc');
+pred_errs = nhv_pred_errs;
+save(strcat(['nhv', '_pred_errs', savename]), 'pred_errs');
+avg_vars = nhv_avg_vars;
+save(strcat(['nhv', '_vars', savename]), 'avg_vars');
+normalized = mcpp_avg_vars ./ ap_vars;
+save(strcat(['nhv', '_normalized_vars', savename]), 'normalized');
 
 [nnhv_wps, pred_field_recs, var_field_recs, nnhv_perc] = kriging_field_explore([1 1], field, 'nnhv', max_percentage, false, strcat(['nnhv', filename]));
 [nnhv_avg_vars, nnhv_pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:nnhv_wps), pred_field_recs(:,:,1:nnhv_wps), field.z);
+perc = nnhv_perc;
+save(strcat(['n-nhv', '_percs', savename]), 'perc');
+pred_errs = nnhv_pred_errs;
+save(strcat(['n-nhv', '_pred_errs', savename]), 'pred_errs');
+avg_vars = nnhv_avg_vars;
+save(strcat(['n-nhv', '_vars', savename]), 'avg_vars');
+normalized = mcpp_avg_vars ./ ap_vars;
+save(strcat(['n-nhv', '_normalized_vars', savename]), 'normalized');
 
 [mcpp_wps, pred_field_recs, var_field_recs, mcpp_perc] = kriging_field_explore([1 1], field, 'mc', max_percentage, false, strcat(['mc', filename]));
 [mcpp_avg_vars, mcpp_pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:mcpp_wps), pred_field_recs(:,:,1:mcpp_wps), field.z);
+perc = mcpp_perc;
+save(strcat(['mc', '_percs', savename]), 'perc');
+pred_errs = mcpp_pred_errs;
+save(strcat(['mc', '_pred_errs', savename]), 'pred_errs');
+avg_vars = mcpp_avg_vars;
+save(strcat(['mc', '_vars', savename]), 'avg_vars');
+normalized = mcpp_avg_vars ./ ap_vars;
+save(strcat(['mc', '_normalized_vars', savename]), 'normalized');
 
 [zz_wps, pred_field_recs, var_field_recs, zz_perc] = zigzag_explore([1 1], field, max_percentage, false, strcat(['zz', filename]));
 [zz_avg_vars, zz_pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:zz_wps), pred_field_recs(:,:,1:zz_wps), field.z);
-%%
-
-[ap_vars, ap_errs] = apriori_errors(field);
+perc = zz_perc;
+save(strcat(['zz', '_percs', savename]), 'perc');
+pred_errs = zz_pred_errs;
+save(strcat(['zz', '_pred_errs', savename]), 'pred_errs');
+avg_vars = zz_avg_vars;
+save(strcat(['zz', '_vars', savename]), 'avg_vars');
+normalized = zz_avg_vars ./ ap_vars;
+save(strcat(['zz', '_normalized_vars', savename]), 'normalized');
 
 %%
 figure();
@@ -100,7 +138,7 @@ t = strcat(['Mean Variances (', num2str(100 * max_percentage), ...
     ' Field - $\sigma_{field} = $ ', num2str(autocorrelation_sigma), ')']);
 title(t, 'FontSize', 18, 'Interpreter', 'Latex')
 
-legend(['Zig-Zag Method'], ['NHV'], ['N-NHV'], ['MCPP'])
+legend(['Zig-Zag Method'], ['HV'], ['N-HV'], ['MCPP'])
 
 xlim([min([zz_perc(1) nhv_perc(1) nnhv_perc(1) mcpp_perc(1)]) max_percentage]);
 grid on
@@ -128,7 +166,7 @@ t = strcat(['Prediction Errors (', num2str(100 * max_percentage), ...
     ' Field - $\sigma_{field} = $ ', num2str(autocorrelation_sigma), ')']);
 title(t, 'FontSize', 18, 'Interpreter', 'Latex')
 
-legend(['Zig-Zag Method'], ['NHV'], ['N-NHV'], ['MCPP'])
+legend(['Zig-Zag Method'], ['HV'], ['N-HV'], ['MCPP'])
 
 xlim([min([zz_perc(1) nhv_perc(1) nnhv_perc(1) mcpp_perc(1)]) max_percentage]);
 grid on
@@ -149,10 +187,10 @@ m = zz_pred_errs;
 fprintf('ZZ:\t%.4f\n', m(end))
 
 m = nhv_pred_errs;
-fprintf('NHV:\t%.4f\n', m(end))
+fprintf('HV:\t%.4f\n', m(end))
 
 m = nnhv_pred_errs;
-fprintf('N-NHV:\t%.4f\n', m(end))
+fprintf('N-HV:\t%.4f\n', m(end))
 
 m = mcpp_pred_errs;
 fprintf('MCPP:\t%.4f\n', m(end))
@@ -163,10 +201,10 @@ m = zz_avg_vars;
 fprintf('ZZ:\t%.4f\n', m(end) ./ ap_vars)
 
 m = nhv_avg_vars;
-fprintf('NHV:\t%.4f\n', m(end) ./ ap_vars)
+fprintf('HV:\t%.4f\n', m(end) ./ ap_vars)
 
 m = nnhv_avg_vars;
-fprintf('N-NHV:\t%.4f\n', m(end) ./ ap_vars)
+fprintf('N-HV:\t%.4f\n', m(end) ./ ap_vars)
 
 m = mcpp_avg_vars;
 fprintf('MCPP:\t%.4f\n', m(end) ./ ap_vars)
