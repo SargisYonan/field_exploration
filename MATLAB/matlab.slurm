@@ -4,10 +4,10 @@
 #SBATCH --output=pp_runs.%j.out
 #SBATCH --nodes=1
 #SBATCH --ntasks=1                   # Run a single task	
-#SBATCH --cpus-per-task=12           # Number of CPU cores per task
+#SBATCH --cpus-per-task=24           # Number of CPU cores per task
 #SBATCH --mail-user=syonan@ucsc.edu
 #SBATCH --mail-type=ALL
-#SBATCH --mem=64G
+#SBATCH --mem=128G
 
 #usage: sbatch this_file
 
