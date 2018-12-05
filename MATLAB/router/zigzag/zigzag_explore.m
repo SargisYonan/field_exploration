@@ -267,7 +267,7 @@ if (~isempty(save_image_path))
     set(gca, 'Ydir', 'reverse');
     title(strcat(['Trace - Area Covered: ', num2str(area_covered * 100), '%']));
     % set the boundry of the frame
-    axis([-1 width+1 -1 width+1]);
+    axis([-1 field.width+1 -1 field.width+1]);
     
     saveas(gca, strcat(['path_',save_image_path]), 'png');
 
