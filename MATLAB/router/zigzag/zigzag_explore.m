@@ -257,6 +257,20 @@ if (~isempty(save_image_path))
     pause(.01);
     
     saveas(return_fig, save_image_path, 'png');
+    
+    %%
+    path_fig = figure('visible', 'off');
+    plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5);
+    hold on;
+    plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['r',u1.cursor]), 'LineWidth', 2);
+    hold off;
+    set(gca, 'Ydir', 'reverse');
+    title(strcat(['Trace - Area Covered: ', num2str(area_covered * 100), '%']));
+    % set the boundry of the frame
+    axis([-1 width+1 -1 width+1]);
+    
+    saveas(gca, strcat(['path_',save_image_path]), 'png');
+
 end
 
 var_field_recs = var_field_recs(:,:,1:wps);
