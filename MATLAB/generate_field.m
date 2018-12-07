@@ -3,9 +3,9 @@ clear all;
 close all;
 
 field_dir = 'fields/';
-field_size = 100;
-sigma_fields = [100, 50, 25, 1];
-seed = 1;
+field_size = 200;
+sigma_fields = [20];
+seed = 2;
 
 addpath(genpath(pwd))
 rng(seed);

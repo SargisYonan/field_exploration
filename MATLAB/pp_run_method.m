@@ -57,7 +57,7 @@ if strcmp(method, 'zz')
     [avg_vars, pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:wps), pred_field_recs(:,:,1:wps), field.z);
 
 else
-    [wps, pred_field_recs, var_field_recs, perc] = kriging_field_explore([1 1], field, method, percentage_scan, true, strcat([method, filename]));
+    [wps, pred_field_recs, var_field_recs, perc] = kriging_field_explore([1 1], field, method, percentage_scan, false, strcat([method, filename]));
     [avg_vars, pred_errs] = kriging_run_process_results(var_field_recs(:,:,1:wps), pred_field_recs(:,:,1:wps), field.z);
 end
 
@@ -68,5 +68,6 @@ normalized = avg_vars ./ ap_vars;
 save(strcat([method, '_normalized_vars', savename]), 'normalized');
 
 exit
+
 end
 

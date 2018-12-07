@@ -1,6 +1,14 @@
-function [ ap_mean_var, ap_mean_pred_err ] = apriori_errors( field )
+function [ ap_mean_var, ap_mean_pred_err ] = apriori_errors( field, points )
     
-    s_locs = [[1 1];[2 2];[3 3];[4 4];[5 5]];
+    if (nargin == 1)
+        points = 5;
+    end
+    
+    s_locs = ones(points, 2);
+    for p = 1:points
+        s_locs(p,:) = p .* s_locs(p,:);
+    end
+    
     samples = zeros(length(s_locs),1);
     for si = 1 : length(s_locs)
        samples(si) = field.z(s_locs(si,1), s_locs(si,2)); 
