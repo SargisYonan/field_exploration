@@ -3,8 +3,8 @@ clear all;
 close all;
 
 field_dir = 'fields/';
-field_size = 200;
-sigma_fields = [20];
+field_size = 100;
+sigma_fields = [1 25 50 100];
 seed = 2;
 
 addpath(genpath(pwd))
