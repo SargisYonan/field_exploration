@@ -15,7 +15,7 @@ function [ best_path ] = mc_krigpathfind( var_field, predicted_field, curr_pos, 
 % Monte Carlo endpoints
 mck = 5;
 % Random MC path per endpoint to calculate
-random_paths_per_ep = 10;
+random_paths_per_ep = 5;
 
 rand_var_x = size(var_field, 1)/50;
 rand_var_y = size(var_field, 1)/50;

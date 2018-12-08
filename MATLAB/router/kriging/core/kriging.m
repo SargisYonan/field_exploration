@@ -129,6 +129,7 @@ Dx = hypot(bsxfun(@minus,x,x'),bsxfun(@minus,y,y'));
 % if we have a bounded variogram model, it is convenient to set distances
 % that are longer than the range to the range since from here on the
 % variogram value remains the same and we don£t need composite functions.
+
 switch vstruct.type;
     case 'bounded'
         Dx = min(Dx,vstruct.range);

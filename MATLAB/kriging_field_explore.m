@@ -34,7 +34,8 @@ yi = yi(:);
 a = 40; % initial seed for fmincon's range search
 c = 5; % initial seed for fmincon's sill search
 
-initial_waypoint = ceil([width/2, width/2]);
+zz_r = 1 / max_scan_percentage;
+initial_waypoint = ceil([(width/2)-zz_r, (width/2)-zz_r]);
 
 pred_field = zeros(size(field.z));
 var_field = inf .* ones(size(field.z));
@@ -162,9 +163,46 @@ while (true)
             [pathfound] = nhv_krigpathfind(var_field);
         elseif (strcmp(method, 'nnhv'))
             [pathfound] = nhv_sets_krigpathfind(var_field, pred_field, u1.curr_pos, u1.s_loc, u1.samples(:), xi, yi, a, c);
-        elseif (strcmp(method, 'greedy'))
+        elseif (strcmp(method, 'gradient'))
             
+            % try this, it works pretty well (save for later, not paper)
+%             step_size = vstruct.range;
+
             step_size = 3;
+            
+            pathfound = [-1 -1];
+            max_candidate_var_found = 0;
+            % make a circle of candidate locations
+            for thetad = 0 : 360
+                candidate_point = u1.curr_pos + step_size*[cosd(thetad) sind(thetad)];
+                
+                candidate_point = ceil(candidate_point);
+                if (candidate_point(1) > width)
+                    candidate_point(1) = width;
+                end
+                if (candidate_point(1) < 1)
+                    candidate_point(1) = 1;
+                end
+                
+                if (candidate_point(2) > width)
+                    candidate_point(2) = width;
+                end
+                if (candidate_point(2) < 1)
+                    candidate_point(2) = 1;
+                end
+                
+                candidate_var = var_field(candidate_point(1), candidate_point(2));
+                if (candidate_var > max_candidate_var_found)
+                   pathfound = candidate_point;
+                   max_candidate_var_found = candidate_var;
+                end
+                
+            end
+
+         elseif (strcmp(method, 'gr'))
+            
+            step_size = vstruct.range;
+            
             pathfound = [-1 -1];
             max_candidate_var_found = 0;
             % make a circle of candidate locations
@@ -194,6 +232,33 @@ while (true)
                 
             end
             
+        elseif (strcmp(method, 'nbv'))
+            
+            step_size = 2;
+            
+            % make a circle of candidate locations
+            maximum_variances = sort(unique(max(var_field)), 'descend');
+            [pix, piy] = find(var_field == maximum_variances(1));
+            pix = pix(1);
+            piy = piy(1);
+            
+            if (pix > width)
+                pix = width;
+            end
+            if (pix < 1)
+                pix = 1;
+            end
+
+            if (piy > width)
+                piy = width;
+            end
+            if (piy < 1)
+                piy = 1;
+            end
+                
+            thetad = atan2d(piy - u1.curr_pos(2), pix - u1.curr_pos(1));
+            pathfound = u1.curr_pos + step_size*[cosd(thetad) sind(thetad)];
+                            
         elseif (strcmp(method, 'poi'))
             [pathfound] = npoi_krigpathfind( var_field, pred_field );
         else

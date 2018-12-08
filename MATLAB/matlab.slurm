@@ -15,7 +15,7 @@ MATLAB=matlab
 
 cd field_exploration/MATLAB
 
-declare -a sigma_field_dividers=(100 50 25 1)
+declare -a sigma_field_dividers=(100 50 1)
 declare -a percentage_scans=(10 20 30)
 field_size_width=100
 random_seed=2
@@ -30,21 +30,51 @@ do
 		module load matlab/2017b
 		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'zz\',$random_seed,$field_size_width,"$perc","$div"\)
 		module unload matlab/2017b
+
+		module load matlab/2017b
+		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nhv\',$random_seed,$field_size_width,"$perc","$div"\)
+		module unload matlab/2017b
+
+		module load matlab/2017b
+		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nnhv\',$random_seed,$field_size_width,"$perc","$div"\)
+		module unload matlab/2017b
+
+		module load matlab/2017b
+		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'gradient\',$random_seed,$field_size_width,"$perc","$div"\)
+		module unload matlab/2017b
+
+		module load matlab/2017b
+		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'gr\',$random_seed,$field_size_width,"$perc","$div"\)
+		module unload matlab/2017b
+
+		module load matlab/2017b
+		$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'mc\',$random_seed,$field_size_width,"$perc","$div"\)
+		module unload matlab/2017b
 	done
 
-	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nhv\',$random_seed,$field_size_width,30,"$div"\)
-	module unload matlab/2017b
-
-	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nnhv\',$random_seed,$field_size_width,30,"$div"\)
-	module unload matlab/2017b
-
-	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'mc\',$random_seed,$field_size_width,30,"$div"\)
-	module unload matlab/2017b
-
-	module load matlab/2017b
-	$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'greedy\',$random_seed,$field_size_width,30,"$div"\)
-	module unload matlab/2017b
 done
+# courser runs
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'zz\',$random_seed,20,40,4\)
+module unload matlab/2017b
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nhv\',$random_seed,20,40,4\)
+module unload matlab/2017b
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nnhv\',$random_seed,20,40,4\)
+module unload matlab/2017b
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'gradient\',$random_seed,20,40,4\)
+module unload matlab/2017b
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'gr\',$random_seed,20,40,4\)
+module unload matlab/2017b
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nbv\',$random_seed,20,40,4\)
+module unload matlab/2017b

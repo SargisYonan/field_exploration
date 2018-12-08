@@ -11,14 +11,20 @@ addpath(genpath(pwd));
 mat_file_dir = 'test/';
 save_to_dir = 'paper_plots/';
 
-data_file_prefixes = {'mc', 'nnhv', 'nhv', 'greedy', 'zz'};
+index_offset = 2;
+% data_file_prefixes = {'mc', 'nnhv', 'nhv', 'greedy', 'zz'};
+data_file_prefixes = {'mc', 'zz'};
+% data_file_prefixes = {'mc', 'nnhv', 'nhv'};
+
 apriori_points = 10;
 
-scan_percentages = [10 20 30]; % lowest to highest
+% scan_percentages = [10 20 30]; % lowest to highest
+scan_percentages = [30];
+
 max_p = num2str(scan_percentages(end));
 field_width = 100;
-sigma_fields = [100]% 50 100];
-seed = 1;
+sigma_fields = [25]% 50 100];
+seed = 2;
 
 vars = figure(1);
 errs = figure(2);
@@ -34,7 +40,9 @@ for dix = 1 : size(data_file_prefixes,2)
        num2str(field_width),'x',num2str(field_width), ...
        '_sf_', num2str(sigma_fields(sf_ix)), ...
        '_seed_', num2str(seed)]));
+   
    [ap_mean_var, ap_mean_pred_err] = apriori_errors( field.field, apriori_points );
+   ap_mean_pred_err = 1;
    
    if (strcmp(prefix, 'zz'))
        for p = 1 : length(scan_percentages)
@@ -63,10 +71,10 @@ for dix = 1 : size(data_file_prefixes,2)
         
         figure(1);
         if (length(sigma_fields) == 1)
-            semilogy(100*percentages, vars ./ ap_mean_var, '--', 'LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), vars(index_offset:end) ./ ap_mean_var, '--', 'LineWidth', 1.8, ...
                 'DisplayName', strcat(['$',upper(prefix),'_{',num2str(this_p),'\%}', '$']))
         else    
-            semilogy(100*percentages, vars ./ ap_mean_var, '--', 'LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), vars(index_offset:end) ./ ap_mean_var, '--', 'LineWidth', 1.8, ...
                 'DisplayName', strcat(['$',upper(prefix),'_{',num2str(this_p),'\%}',' - \sigma_{field}=', num2str(sigma_fields(sf_ix)), '$']))
         end
         
@@ -74,10 +82,10 @@ for dix = 1 : size(data_file_prefixes,2)
         
         figure(2);
         if (length(sigma_fields) == 1)
-            semilogy(100*percentages, errors ./ ap_mean_pred_err, '--','LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), errors(index_offset:end) ./ ap_mean_pred_err, '--','LineWidth', 1.8, ...
             'DisplayName', strcat(['$',upper(prefix),'_{',num2str(this_p),'\%}', '$']))    
         else
-            semilogy(100*percentages, errors ./ ap_mean_pred_err, '--','LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), errors(index_offset:end) ./ ap_mean_pred_err, '--','LineWidth', 1.8, ...
             'DisplayName', strcat(['$',upper(prefix),'_{',num2str(this_p),'\%}',' - \sigma_{field}=', num2str(sigma_fields(sf_ix)), '$']))
         end
         
@@ -121,10 +129,10 @@ for dix = 1 : size(data_file_prefixes,2)
 
         figure(1);
         if (length(sigma_fields) == 1)
-            semilogy(100*percentages, vars ./ ap_mean_var, 'LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), vars(index_offset:end) ./ ap_mean_var, 'LineWidth', 1.8, ...
                 'DisplayName', plot_name)
         else
-            semilogy(100*percentages, vars ./ ap_mean_var, 'LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), vars(index_offset:end) ./ ap_mean_var, 'LineWidth', 1.8, ...
                 'DisplayName', strcat([plot_name,' - $\sigma_{field}=', num2str(sigma_fields(sf_ix)),'$']))
         end
         
@@ -133,10 +141,10 @@ for dix = 1 : size(data_file_prefixes,2)
         figure(2);
         
         if (length(sigma_fields) == 1)
-            semilogy(100*percentages, errors ./ ap_mean_pred_err, 'LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), errors(index_offset:end) ./ ap_mean_pred_err, 'LineWidth', 1.8, ...
                 'DisplayName', plot_name)
         else
-            semilogy(100*percentages, errors ./ ap_mean_pred_err, 'LineWidth', 1.5, ...
+            semilogy(100*percentages(index_offset:end), errors(index_offset:end) ./ ap_mean_pred_err, 'LineWidth', 1.8, ...
                 'DisplayName', strcat([plot_name,' - $\sigma_{field}=', num2str(sigma_fields(sf_ix)),'$']))
         end
         
