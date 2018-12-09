@@ -4,26 +4,25 @@ clear all;
 close all;
 clc;
 
-save_plots = true;
+save_plots = false;
 
 addpath(genpath(pwd));
 
 mat_file_dir = 'test/';
 save_to_dir = 'paper_plots/';
 
-index_offset = 2;
+index_offset = 1;
 % data_file_prefixes = {'mc', 'nnhv', 'nhv', 'greedy', 'zz'};
-data_file_prefixes = {'mc', 'zz'};
-% data_file_prefixes = {'mc', 'nnhv', 'nhv'};
+% data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz', 'nbv'};
+data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
 
-apriori_points = 10;
+% data_file_prefixes = {'mc', 'zz'};
 
-% scan_percentages = [10 20 30]; % lowest to highest
-scan_percentages = [30];
+scan_percentages = [10 20 30]; % lowest to highest
 
 max_p = num2str(scan_percentages(end));
 field_width = 100;
-sigma_fields = [25]% 50 100];
+sigma_fields = [1];
 seed = 2;
 
 vars = figure(1);
@@ -40,10 +39,20 @@ for dix = 1 : size(data_file_prefixes,2)
        num2str(field_width),'x',num2str(field_width), ...
        '_sf_', num2str(sigma_fields(sf_ix)), ...
        '_seed_', num2str(seed)]));
-   
-   [ap_mean_var, ap_mean_pred_err] = apriori_errors( field.field, apriori_points );
-   ap_mean_pred_err = 1;
-   
+      
+   if (length(sigma_fields) == 1)
+        zz_r = 1 / max(scan_percentages);
+        zz_r = zz_r / 100;
+        initial_waypoint = ceil((field_width/2)-zz_r);
+
+        apriori_points = initial_waypoint;
+        [ap_mean_var, ap_mean_pred_err] = apriori_errors( field.field, apriori_points );
+    else
+        apriori_points = 0;
+        ap_mean_var = 1;
+        ap_mean_pred_err = 1;
+   end
+
    if (strcmp(prefix, 'zz'))
        for p = 1 : length(scan_percentages)
         this_p = num2str(scan_percentages(p));
@@ -119,7 +128,11 @@ for dix = 1 : size(data_file_prefixes,2)
             plot_name = 'HV';
         elseif strcmp('nnhv', prefix)
             plot_name = '$N$-HV';
-        elseif strcmp('greedy', prefix)
+        elseif strcmp('gradient', prefix)
+            plot_name = 'GA';
+        elseif strcmp('gr', prefix)
+            plot_name = 'GRA';
+        elseif strcmp('nbv', prefix)
             plot_name = 'NBV';
         elseif strcmp('mc', prefix)
             plot_name = 'MCPP';
@@ -153,20 +166,28 @@ for dix = 1 : size(data_file_prefixes,2)
    end
 end
 
+if (apriori_points == 0)
+    normalized_ornot = '';
+    normie = '';
+else
+    normalized_ornot = 'Normalized ';
+    normie = 'normalized_';
+end
 figure(1);
 leg = legend('show');
 set(leg, 'Interpreter', 'Latex');
 set(leg, 'FontSize', 12)  
+set(leg, 'Orientation', 'vertical');
 
 if (length(sigma_fields) == 1)
-    title(strcat(['Normalized Variance Comparison - $\sigma_{field} = ', num2str(sigma_fields(1)), '$']), 'Interpreter', 'Latex', 'FontSize', 18)
-    save_name = strcat([save_to_dir, 'normalized_variances_', max_p, 'p_', ...
+    title(strcat([normalized_ornot, 'Variance Comparison - $\sigma_{field} = ', num2str(sigma_fields(1)), '$']), 'Interpreter', 'Latex', 'FontSize', 18)
+    save_name = strcat([save_to_dir, normie, 'variances_', max_p, 'p_', ...
             num2str(field_width),'x',num2str(field_width), ...
             '_sf_', num2str(sigma_fields(sf_ix)), ...
             '_seed_', num2str(seed) ,'_app_', num2str(apriori_points)]);
 else
-    title('Normalized Variance Comparison', 'Interpreter', 'Latex', 'FontSize', 18)
-    save_name = strcat([save_to_dir, 'normalized_variances_', max_p, 'p_', ...
+    title(strcat([normalized_ornot, 'Variance Comparisons for Varying Values of $\sigma_{field}$']), 'Interpreter', 'Latex', 'FontSize', 18)
+    save_name = strcat([save_to_dir, normie, 'variances_', max_p, 'p_', ...
             num2str(field_width),'x',num2str(field_width), ...
             '_sf_', 'all', ...
             '_seed_', num2str(seed) ,'_app_', num2str(apriori_points)]);
@@ -184,16 +205,17 @@ figure(2);
 leg = legend('show');
 set(leg, 'Interpreter', 'Latex');
 set(leg, 'FontSize', 12)  
+set(leg, 'Orientation', 'vertical');
 
 if (length(sigma_fields) == 1)
-    title(strcat(['Normalized Prediction Error Comparison - $\sigma_{field} = ', num2str(sigma_fields(1)), '$']), 'Interpreter', 'Latex', 'FontSize', 18)
-    save_name = strcat([save_to_dir, 'normalized_errors_', max_p, 'p_', ...
+    title(strcat([normalized_ornot, 'Prediction Error Comparison - $\sigma_{field} = ', num2str(sigma_fields(1)), '$']), 'Interpreter', 'Latex', 'FontSize', 18)
+    save_name = strcat([save_to_dir, normie, 'errors_', max_p, 'p_', ...
             num2str(field_width),'x',num2str(field_width), ...
             '_sf_', num2str(sigma_fields(sf_ix)), ...
             '_seed_', num2str(seed) ,'_app_', num2str(apriori_points)]);
 else
-    title('Normalized Prediction Error Comparison', 'Interpreter', 'Latex', 'FontSize', 18)
-    save_name = strcat([save_to_dir, 'normalized_errors_', max_p, 'p_', ...
+    title(strcat([normalized_ornot, 'Prediction Error Comparisons for Varying Values of $\sigma_{field}$']), 'Interpreter', 'Latex', 'FontSize', 18)
+    save_name = strcat([save_to_dir, normie, 'errors_', max_p, 'p_', ...
             num2str(field_width),'x',num2str(field_width), ...
             '_sf_', 'all', ...
             '_seed_', num2str(seed) ,'_app_', num2str(apriori_points)]);
