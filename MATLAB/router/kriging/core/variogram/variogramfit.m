@@ -381,8 +381,6 @@ if nargout == 4;
     S.message   = output.message;
 end
 
-
-
 % if you want to plot the results...
 if params.plotit
     switch lower(type)

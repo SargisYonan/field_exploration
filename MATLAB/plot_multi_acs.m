@@ -13,16 +13,16 @@ save_to_dir = 'paper_plots/';
 
 index_offset = 1;
 % data_file_prefixes = {'mc', 'nnhv', 'nhv', 'greedy', 'zz'};
-% data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz', 'nbv'};
-data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
+data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz', 'nbv'};
+% data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
 
 % data_file_prefixes = {'mc', 'zz'};
 
-scan_percentages = [10 20 30]; % lowest to highest
+scan_percentages = [40]; % lowest to highest
 
 max_p = num2str(scan_percentages(end));
-field_width = 100;
-sigma_fields = [1];
+field_width = 20;
+sigma_fields = [4];
 seed = 2;
 
 vars = figure(1);

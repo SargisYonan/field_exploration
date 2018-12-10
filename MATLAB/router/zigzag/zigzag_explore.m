@@ -117,7 +117,7 @@ while (true)
                 wps = wps + 1;
                 d = variogram(u1.s_loc, u1.samples(:), 'plot', false);
                 [a,c,~,vstruct] = variogramfit(d.distance,d.val,a,c,[],'plotit',false);
-
+                                
                 [zi,s2zi] = kriging(vstruct, u1.s_loc(:,1),u1.s_loc(:,2), ...
                     u1.samples(:), ...
                     xi, yi, ...
@@ -267,7 +267,7 @@ if (~isempty(save_image_path))
     set(gca, 'Ydir', 'reverse');
     title(strcat(['Trace - Area Covered: ', num2str(area_covered * 100), '%']));
     % set the boundry of the frame
-    axis([-1 field.width+1 -1 field.width+1]);
+    axis([-1 field.width -1 field.width]);
     
     saveas(gca, strcat(['path_',save_image_path]), 'png');
 

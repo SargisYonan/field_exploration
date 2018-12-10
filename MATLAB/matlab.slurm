@@ -78,3 +78,9 @@ module unload matlab/2017b
 module load matlab/2017b
 $MATLAB -nodisplay -nodesktop -r pp_run_method\(\'nbv\',$random_seed,20,40,4\)
 module unload matlab/2017b
+
+module load matlab/2017b
+$MATLAB -nodisplay -nodesktop -r pp_run_method\(\'mc\',$random_seed,20,40,4\)
+module unload matlab/2017b
+
+
