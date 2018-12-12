@@ -14,16 +14,16 @@ save_to_dir = 'paper_plots/';
 index_offset = 1;
 % data_file_prefixes = {'mc', 'nnhv', 'nhv', 'greedy', 'zz'};
 %  data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz', 'nbv'};
-data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
+% data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
 
-% data_file_prefixes = {'mc', 'zz'};
+data_file_prefixes = {'mc', 'zz'};
 
 scan_percentages = [10 20 30]; % lowest to highest
 
 max_p = num2str(scan_percentages(end));
 field_width = 100;
-sigma_fields = [1];
-seed = 3;
+sigma_fields = [1 50 100];
+seed = 2;
 
 vars = figure(1);
 errs = figure(2);
@@ -47,10 +47,22 @@ for dix = 1 : size(data_file_prefixes,2)
 
         apriori_points = initial_waypoint;
         [ap_mean_var, ap_mean_pred_err] = apriori_errors( field.field, apriori_points );
+        %% todo
+        ap_mean_pred_err = sqrt(ap_mean_var)
+        
     else
         apriori_points = 0;
         ap_mean_var = 1;
         ap_mean_pred_err = 1;
+        
+        %% todo
+        zz_r = 1 / max(scan_percentages);
+        zz_r = zz_r / 100;
+        initial_waypoint = ceil((field_width/2)-zz_r);
+
+        apriori_points = initial_waypoint;
+        [ap_mean_var, ap_mean_pred_err] = apriori_errors( field.field, apriori_points );
+        ap_mean_pred_err = sqrt(ap_mean_var)
    end
 
    if (strcmp(prefix, 'zz'))

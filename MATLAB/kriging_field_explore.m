@@ -81,6 +81,9 @@ if (live_plot)
     pause(0.01);
 end
 
+last_area_covered = 0;
+save_snapshot = false;
+
 while (true)
     area_covered = length(u1.s_loc)/(width^2);
     waitbar(area_covered/max_scan_percentage, wb, 'Exploring field...');
@@ -273,16 +276,37 @@ while (true)
         end
         
         if (~isempty(save_image_path))
-            path_fig = figure('visible', 'off');
-            plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5);
-            hold on;
-            plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['r',u1.cursor]), 'LineWidth', 2);
-            hold off;
-            set(gca, 'Ydir', 'reverse');
-            title(strcat(['Trace - Area Covered: ', num2str(area_covered * 100), '%']));
-            % set the boundry of the frame
-            axis([-1 width+1 -1 width+1]);
-            saveas(gca, strcat(['path_', num2str(area_covered*100), '_snapshot_', save_image_path]), 'png');    
+            if last_area_covered < 10 && area_covered*100 >= 10   
+                snapshot_name = strcat(['path_', num2str(10), '_snapshot_', save_image_path]);
+                save_snapshot = true;
+            end
+            
+            if last_area_covered < 20 && area_covered*100 >= 20   
+                snapshot_name = strcat(['path_', num2str(20), '_snapshot_', save_image_path]);
+                save_snapshot = true;
+            end
+            
+            if last_area_covered < 30 && area_covered*100 >= 30   
+                snapshot_name = strcat(['path_', num2str(30), '_snapshot_', save_image_path]);
+                save_snapshot = true;
+            end
+            
+            if (save_snapshot)
+                path_fig = figure('visible', 'off');
+                plot(u1.s_loc(:,1),u1.s_loc(:,2), 'k-', 'LineWidth', 1.5);
+                hold on;
+                plot(u1.curr_pos(1),u1.curr_pos(2), strcat(['r',u1.cursor]), 'LineWidth', 2);
+                hold off;
+                set(gca, 'Ydir', 'reverse');
+                title(strcat(['Trace - Area Covered: ', num2str(area_covered * 100), '%']));
+                % set the boundry of the frame
+                axis([-1 width+1 -1 width+1]);
+                saveas(gca, snapshot_name, 'png'); 
+                
+                save_snapshot = false;
+            end
+            
+            last_area_covered = area_covered * 100;
         end
         
         u1.set_destination(pathfound(1,:));     
