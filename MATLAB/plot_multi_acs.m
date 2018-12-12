@@ -4,7 +4,7 @@ clear all;
 close all;
 clc;
 
-save_plots = false;
+save_plots = true;
 
 addpath(genpath(pwd));
 
@@ -13,17 +13,17 @@ save_to_dir = 'paper_plots/';
 
 index_offset = 1;
 % data_file_prefixes = {'mc', 'nnhv', 'nhv', 'greedy', 'zz'};
-data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz', 'nbv'};
-% data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
+%  data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz', 'nbv'};
+data_file_prefixes = {'mc', 'gradient', 'gr', 'nhv', 'nnhv', 'zz'};
 
 % data_file_prefixes = {'mc', 'zz'};
 
-scan_percentages = [40]; % lowest to highest
+scan_percentages = [10 20 30]; % lowest to highest
 
 max_p = num2str(scan_percentages(end));
-field_width = 20;
-sigma_fields = [4];
-seed = 2;
+field_width = 100;
+sigma_fields = [1];
+seed = 3;
 
 vars = figure(1);
 errs = figure(2);
@@ -131,7 +131,7 @@ for dix = 1 : size(data_file_prefixes,2)
         elseif strcmp('gradient', prefix)
             plot_name = 'GA';
         elseif strcmp('gr', prefix)
-            plot_name = 'GRA';
+            plot_name = 'RGA';
         elseif strcmp('nbv', prefix)
             plot_name = 'NBV';
         elseif strcmp('mc', prefix)

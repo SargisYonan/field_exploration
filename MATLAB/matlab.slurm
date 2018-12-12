@@ -18,7 +18,7 @@ cd field_exploration/MATLAB
 declare -a sigma_field_dividers=(100 50 1)
 declare -a percentage_scans=(10 20 30)
 field_size_width=100
-random_seed=2
+random_seed=3
 
 module purge
 module load hb hb-gnu

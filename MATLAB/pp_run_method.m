@@ -1,4 +1,4 @@
-function [ ] = pp_run_method( method, rand_seed, field_size, percentage_scan, sigma_field )
+function [] = pp_run_method( method, rand_seed, field_size, percentage_scan, sigma_field )
 
 % A script to run a sim of a given method
 %

@@ -5,7 +5,7 @@ close all;
 field_dir = 'fields/';
 field_size = 20;
 sigma_fields = [4];
-seed = 2;
+seed = 3;
 
 addpath(genpath(pwd))
 rng(seed);
